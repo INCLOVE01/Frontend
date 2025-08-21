@@ -87,7 +87,7 @@ async function submitForm({email,password}){
 //main function
 export function SignUp({className, ...props}) {
 
-  let [formStep, setFormStep] = useState(3)
+  let [formStep, setFormStep] = useState(1)
 
   return (
     <>
