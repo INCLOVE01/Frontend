@@ -9,12 +9,13 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
 import { useState } from "react"
-import { CalendarIcon, LoaderCircle } from "lucide-react"
+import { CalendarIcon, Eye, LoaderCircle, Lock } from "lucide-react"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Calendar } from "./ui/calendar"
 import { format } from "date-fns"
 import { useRouter } from "next/navigation"
 import { Checkbox } from "./ui/checkbox"
+import { toast } from "sonner"
 
 //rules to validate password strength
 const passwordRules = [
@@ -27,6 +28,7 @@ const passwordRules = [
 // formschema object
 const formSchema = z.object({
     email : z.email({error:'email is required'}),
+    userId : z.string({error:'user id is required'}).min(6,{error:'min 6 character'}),
     password: z
     .string()
     .min(8, { error: "Password must be at least 8 characters" })
@@ -35,15 +37,16 @@ const formSchema = z.object({
     .regex(/[!@#$%^&*(),.?":{}|<>]/, { error: "Include a special character" }),
     code : z.coerce .number().min(6,{error : 'min 6 digits'}),
     username : z.string().min(3,{error:'min 3 characters'}).max(27,{error:'max 27 characters'}),
-    dob : z.date(),
+    dob : z.date().default(() => new Date()),
     gender : z.string(),
     bio : z.string().min(5, {error : 'min 5 characters'}),
     disable : z.boolean(),
-    disability : z.string().optional()
+    disability : z.string().optional(),
+    location : z.string({error:'Location required'})
 })
 // form validation object for sign-up
 const step1Schema = formSchema.pick({
-  email : true, password : true
+  email : true, password : true, userId : true
 })
 // form validation object for code
 const step2Schema = formSchema.pick({
@@ -51,7 +54,7 @@ const step2Schema = formSchema.pick({
 })
 // form validation object for account info
 const step3Schema = formSchema.pick({
-  username : true, dob : true, gender : true, bio : true, disability : true, disable : true
+  username : true, dob : true, gender : true, bio : true, disability : true, disable : true, location : true
 }).superRefine((data, ctx) => {
    console.log("Disable:", data.disable, "Disability:", data.disability);
     if (data.disable && (!data.disability || data.disability.trim() === "")) {
@@ -72,22 +75,10 @@ function calculatePasswordStrength(password) {
   return score;
 }
 
-// submit email and password to backend
-async function submitForm({email,password}){
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    const req = await fetch("/api/signup", {
-    method: "POST",
-    body: formData, // do not set Content-Type, browser sets it automatically
-    });
-    return req.json()
-}
-
 //main function
 export function SignUp({className, ...props}) {
 
-  let [formStep, setFormStep] = useState(1)
+  let [formStep, setFormStep] = useState(3)
 
   return (
     <>
@@ -103,37 +94,54 @@ export function SignUp({className, ...props}) {
 export function Step1({setFormStep}){
 
   let [formSubmit, setFormSubmit] = useState(false)
+  let [passVisible, setPassVisible] = useState('password')
   const form = useForm({
       resolver : zodResolver(step1Schema),
       defaultValues : {
           email : '',
-          password : ''
+          password : '',
+          userId : ''
       }
   })
 
   const onSubmit = async (formData) => {
-      try {
-          const {email, password} = formData
-          if(!email && !password){
-              return
-          } 
-          setFormSubmit(true)
-          const result = await submitForm(formData);
-          setFormSubmit(false)
-          if(result.status == 200){
-              setFormStep(2)
+    const {email, password, userId} = formData
+    if(email && password && userId){
+      try{
+          setFormSubmit = true
+          const formData = new FormData();
+          formData.append("email", email);
+          formData.append("password", password);
+          formData.append("userId", userId);
+
+          const req = await fetch(`/api/signup`, {
+          method: "POST",
+          body: formData, 
+          });
+
+          const resp = await req.json()
+          setFormSubmit = false
+          if(resp.status == 200){
+            setFormSubmit(false)
+            setFormStep(2)
           } else{
-              console.log('something went wrong')
+              toast.error(resp.message,{position:"top-center", style:{color:'red'}})
+
           }
-          
-        
-      } catch (error) {
-        console.error("Submit error:", error);
+      } catch(e){
+        toast.error('Server Error',{position:"top-center", style:{color:'red'}})
       }
+    }
+    
+  }
+  function setPasswordType(){
+    if(passVisible == 'string') setPassVisible('password')
+    else setPassVisible('string')
   }
 
 const passwordValue = form.watch("password") || ""
 let strength = calculatePasswordStrength(passwordValue)
+
 
   return(
     <>
@@ -149,7 +157,7 @@ let strength = calculatePasswordStrength(passwordValue)
                 </CardHeader>
                 <CardContent className="flex flex-col p-0">
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 md:space-y-6">
                             <FormField
                                 control = {form.control}
                                 name = "email"
@@ -157,7 +165,20 @@ let strength = calculatePasswordStrength(passwordValue)
                                     <FormItem>
                                         <FormLabel>Email</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="example@email.com" {...field} />
+                                            <Input placeholder="your email" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control = {form.control}
+                                name = "userId"
+                                render = {({field})=>(
+                                    <FormItem>
+                                        <FormLabel>UserId</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="your userId" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -171,14 +192,19 @@ let strength = calculatePasswordStrength(passwordValue)
                                     <FormItem>
                                         <FormLabel>Password</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="your password here" {...field} />
+                                          <div className="relative w-full h-fit flex">
+                                            <Input placeholder="your password" {...field}  type={passVisible} />
+                                            <button type="button" onClick={setPasswordType} className={`absolute z-10 right-2 aspect-square h-full grid place-items-center before:h-0.5 before:bg-neutral-700 before:rounded-full before:-rotate-45 before:absolute before:duration-100 ${passVisible == 'password' ? 'before:w-7' : 'before:w-0' }`}>
+                                              <Eye color="#404040"/>
+                                            </button>
+                                          </div>
                                         </FormControl>
                                         <div style={{ width: `${strength}%` }} className={` h-1 rounded-full -mt-1 transition-all duration-300 ${strength < 50 ? "bg-red-500" : strength < 75 ? "bg-yellow-400" : "bg-green-500" }`}></div>
                                         <FormMessage />                                        
                                     </FormItem>
                                 )}
                             />
-                            <div className="w-full h-10 bg-foreground rounded-md overflow-hidden">
+                            <div className="w-full h-10 bg-foreground rounded-md overflow-hidden mt-2">
                                 {formSubmit != true ? <Button type = "submit" className="w-full h-full bg-none">Create my account</Button>
                                 : <div className="w-full h-full grid place-items-center"> <span className="w-fit h-fit animate-spin"> <LoaderCircle stroke="white"/> </span> </div> 
                                 }                                
@@ -248,6 +274,7 @@ export function Step2({setFormStep}){
     resolver : zodResolver(step2Schema),
   })
 
+// function to submit code
   async function codeSubmit({code}){
     if(!code){
       return
@@ -255,29 +282,33 @@ export function Step2({setFormStep}){
     const element = document.getElementById('code-input')
     const element1 = document.getElementById('code-error')
 
-    setFormSubmit(true)
-    const formData = new FormData();
-    formData.append("code", code);
-    const req = await fetch("/api/code", {
-    method: "POST",
-    body: formData, // do not set Content-Type, browser sets it automatically
-    });
-    const resp = await req.json()
-    setFormSubmit(false)
-    if( resp.status == 200){
-      element.style.borderColor = 'transparent'
-       element1.style.display = 'none'
-      console.log(resp.message)
-      setFormStep(3)
-    } else{
-      if(resp.status == 400){
-      element.style.borderColor = 'red'
-       element1.style.display = 'block'
-      } else{
-        console.log('server error',resp.error)
+    try{
+      setFormSubmit(true)
+      const formData = new FormData();
+      formData.append("code", code);
+      const req = await fetch("/api/code", {
+        method: "POST",
+        body: formData, // do not set Content-Type, browser sets it automatically
+      });
+      const resp = await req.json()
+      setFormSubmit(false)
+      if(resp.status == 200){
+        element.style.borderColor = 'transparent'
+        element1.style.display = 'none'
+        toast.success('Account Verified',{position:'top-center', style:{color:'green'}})
+        // setFormStep(3)
+      } else if(resp.status == 400){
+        toast.error(resp.message, {position:'top-center', style:{color:'red'}})
       }
-    }
+       else{
+        element.style.borderColor = 'red'
+        element1.style.display = 'block'
+        toast.error(resp.message, {position:'top-center', style:{color:'red'}})
+      }
 
+    }catch(e){
+      toast.error('Server error', {position:'top-center', style:{color:'red'}})
+    }
 
   }
   
@@ -334,7 +365,8 @@ export function Step3(){
       gender : '',
       bio : '',
       disability : '',
-      disable : false
+      disable : false,
+      location : '',
     }
   })
 
@@ -344,29 +376,36 @@ const disable = form.watch('disable') || false
 async function handleaccount({username,dob,gender,bio, disable,disability}){
   if(!username && !dob && !gender && !bio) return
   if(disable && !disability) return
-  setFormSubmit(true)
+  try{
+    setFormSubmit(true)
 
-  const formData = new FormData();
-  formData.append("username", username)
-  formData.append("dob", dob)
-  formData.append("gender", gender)
-  formData.append("bio", bio)
-  formData.append("disable", disable)
-  formData.append("disability", disability)
+    const formData = new FormData();
+    formData.append("username", username)
+    formData.append("dob", dob)
+    formData.append("gender", gender)
+    formData.append("bio", bio)
+    formData.append("disable", disable)
+    formData.append("disability", disability)
+    formData.append("location", location)
 
 
-  const req = await fetch("/api/account/create", {
-  method: "POST",
-  body: formData, // do not set Content-Type, browser sets it automatically
-  });
-  const resp = await req.json()
-  setFormSubmit(false)
+    const req = await fetch("/api/account/create", {
+      method: "POST",
+      body: formData, // do not set Content-Type, browser sets it automatically
+    });
+    const resp = await req.json()
+    setFormSubmit(false)
 
-  if(resp.status == 200){
-    console.log('success')
-    router.push('/home')
-  } else{
-    console.log('error occured', resp.message)
+    if(resp.status == 200){
+        toast.success('Account Success', {position : 'top-center' , style : {color : 'green'}})
+        setTimeout(() => {
+          router.push('/home')          
+        }, 1000);
+    } else{
+        toast.error(resp.message, {position : 'top-center' , style : {color : 'red'}})
+    }
+  }catch(e){
+    toast.error('Server error', {position : 'top-center' , style : {color : 'red'}})
   }
 }
   
@@ -414,8 +453,8 @@ async function handleaccount({username,dob,gender,bio, disable,disability}){
                                 </Button>
                           </FormControl>
                         </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
+                        <PopoverContent className="w-auto p-0 bg-slate-50" align="start">
+                          <Calendar 
                             mode="single"
                             selected={field.value}
                             onSelect={field.onChange}
@@ -450,12 +489,25 @@ async function handleaccount({username,dob,gender,bio, disable,disability}){
                       <FormItem>
                           <FormLabel>Bio</FormLabel>
                           <FormControl>
-                              <Input placeholder="write something about yourself" {...field} />
+                              <Input placeholder="intoduce yourself" {...field} />
                           </FormControl>
                           <FormMessage />
                       </FormItem>
                   )}
-                />     
+                />
+                <FormField
+                    control = {form.control}
+                    name = "location"
+                    render = {({field})=>(
+                        <FormItem>
+                            <FormLabel>Location</FormLabel>
+                            <FormControl>
+                                <Input placeholder="your location" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                  />
                 <FormField
                   control={form.control}
                   name="disable"

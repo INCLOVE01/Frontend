@@ -5,7 +5,13 @@ export async function POST(request) {
   const gender = data.get("gender");
   const dob = data.get("dob");
   const bio = data.get("bio");
-
+  const disable = data.get("disable");
+  const disability = data.get("disability");
+  const location = data.get("location");
+  console.log(dob,location,username,gender,bio,)
+  if(!username || !gender || !dob || !bio || !location ){
+    return Response.json({message : 'Missing credentials', status : 400}, {status : 400})
+  }
   try{
     if(username && gender && dob && bio){
         return Response.json({message : 'Account created', status : 200}, {status : 200})
