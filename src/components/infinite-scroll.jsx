@@ -1,66 +1,34 @@
 'use client'
+import Image from "next/image";
 import React from "react";
+import { global } from "styled-jsx/css";
 
-const InfiniteCarouselCSS = ({ items, itemWidth = 300 }) => {
-  return (
-    <div
-      className="overflow-hidden select-none"
-      style={{ width: `${itemWidth * 3}px` }} // visible area for 3 items
-    >
-      <div
-        className="flex whitespace-nowrap animate-scroll gap-1"
-        style={{ width: `${items.length * 2 * itemWidth}px` }}
-      >
-        {[...items, ...items].map((item, idx) => (
-          <div
-            key={idx}
-            className="flex-shrink-0 border rounded-md flex items-center justify-center text-2xl font-semibold"
-            style={{ width: `${itemWidth}px`, height: "200px" }}
-          >
-            {item}
-          </div>
-        ))}
+export default function InfiniteScroll(){
+  const item = [1,2,3,4]
+  return(
+    <>
+      <div className="w-xs h-screen bg-white infinitecarousal">
+        <div className="flex flex-col gap-2 scrollinfinite">
+          {item.map((n,i)=>(
+            <Card key={i} item={n} />
+          ) )}
+        </div>
+        <div aria-hidden className="flex flex-col gap-2 scrollinfinite mt-2">
+          {item.map((n,i)=>(
+            <Card key={i} item={n} />
+          ) )}
+        </div>
       </div>
+    </>
+  )
+}
 
-      <style>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        .animate-scroll {
-          animation: scroll 20s linear infinite;
-        }
-      `}</style>
-    </div>
-  );
-};
-
-export default function App() {
-  const sampleItems = ["Slide 1", "Slide 2", "Slide 3", "Slide 4", "Slide 5"];
-
-  return (
-    <div className=" p-6 flex flex-col justify-center">
-      <h2 className="text-center text-2xl font-bold mb-6">
-        Connecting happy memories
-      </h2>
-      <div className="relative w-full">
-        <InfiniteCarouselCSS items={sampleItems} />
-
-        <div className="pointer-events-none absolute top-0 left-0 h-full w-16" style={{
-          background:
-            "linear-gradient(to right, white, rgba(255,255,255,0))",
-          zIndex: 10,}}></div>
-        <div className="pointer-events-none absolute bg-red-400top-0 right-0 h-full w-16" style={{
-        background:
-          "linear-gradient(to right, white, rgba(255,255,255,0))",
-        zIndex: 10,}}></div>
-
-  
+function Card({item}){
+  return(
+    <>
+      <div className="w-full aspect-video grid place-items-center rounded-md border shadow-sm overflow-hidden">
+        <Image src={'/images/equality.jpg'} alt="img" width={500} height={500} />
       </div>
-    </div>
-  );
+    </>
+  )
 }
