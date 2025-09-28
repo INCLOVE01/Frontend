@@ -1,7 +1,6 @@
 
 import React, { Suspense } from "react"
-import ErrorBoundary from "./error"
-import { ArrowRightIcon } from "lucide-react"
+
 
 const url = process.env.NEXT_PUBLIC_URL
 
@@ -19,13 +18,13 @@ export default function CommunityMin(){
 
 const FetchCommunity = async()=>{
     try{
-        const req = await fetch(`${url}/api/community/min`)
+        const req = await fetch(`/api/community/min`)
         if(!req.ok) return (
             <p>Server error</p>
         )
         const resp = await req.json()
        if(!resp.data.length){
-        <p>Join communities for exciting adventure</p>
+        return <p>Join communities for exciting adventure</p>
        } else{
         return(
             <div className="w-full h-fit flex gap-3">

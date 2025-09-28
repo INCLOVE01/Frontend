@@ -1,9 +1,7 @@
 import CommunityMin from "@/components/community/communityMin";
-import MatchCard from "@/components/matchCard";
+
 import MatchMin from "@/components/matchMin";
 import PlaceMin from "@/components/placeMin";
-import { cn } from "@/lib/utils";
-import { MessageCircleHeartIcon } from "lucide-react";
 
 export default function Page(){
     return(

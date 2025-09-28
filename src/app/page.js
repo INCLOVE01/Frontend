@@ -54,15 +54,15 @@ export default function Home() {
                 <HeartIcon fill="red" stroke="none"/> <Send/> <MessageCircleMore/>
               </div>
 
-              <MapPin fill="white" stroke="gray"  className="row-start-4 col-start-2 shadow-sm"/>
-              <MapPin fill="white"  className="row-start-3 col-start-3 place-self-center justify-self-end shadow-sm"/>
-              <MapPin fill="white"  className="row-start-2 col-start-3 place-self-center justify-self-center shadow-sm hidden md:flex"/>
+              <MapPin fill="white" stroke="gray"  className="row-start-4 col-start-2"/>
+              <MapPin fill="white"  className="row-start-3 col-start-3 place-self-center justify-self-end"/>
+              <MapPin fill="white"  className="row-start-2 col-start-3 place-self-center justify-self-center hidden md:flex"/>
 
 
               <div className=" relative row-start-2 col-start-2 col-end-4 row-end-3 w-32 h-fit bg-slate-50 rounded-xl rounded-br-none shadow-sm p-2 justify-self-center">
                 <Image src={'/images/pp6.jpg'} alt="img" width={500} height={500} className="w-full aspect-square object-cover object-top rounded-md"/>
                 <span className="text-md font-semibold">Emma Dee, 24</span>
-                <MapPin fill="white"  className="absolute -bottom-5 right-0 shadow-sm "/>
+                <MapPin fill="white"  className="absolute -bottom-5 right-0 "/>
               </div>
 
               {/* <div className="row-start-1 col-start-4 w-fit h-fit bg-white rounded-xl rounded-br-none items-center gap-2 px-2 py-1 hidden md:flex">
@@ -171,12 +171,12 @@ export default function Home() {
                 <p className="text-sm">Choose if/when to share precise location data—and only with specific matches or trusted contacts</p>
               </div>
               <div>
-                <img alt="location" width={200} height={100} src="https://www.shutterstock.com/shutterstock/photos/2254949983/display_1500/stock-vector-a-continuous-one-line-drawing-of-a-google-map-view-in-an-urban-area-route-directions-and-locations-2254949983.jpg"/>
+                <Image alt="location" width={200} height={100} src="https://www.shutterstock.com/shutterstock/photos/2254949983/display_1500/stock-vector-a-continuous-one-line-drawing-of-a-google-map-view-in-an-urban-area-route-directions-and-locations-2254949983.jpg"/>
               </div>
             </div>
 
             <div className="w-full h-full col-span-1 row-span-3 bg-[#bde0fe] border flex flex-col items-start justify-start gap-1 p-3 flex-wrap rounded-lg sm:col-span-1">
-              <img src="https://img.icons8.com/office/50/accessibility2.png" alt="accessible" width={32} height={32}/>
+              <Image src="https://img.icons8.com/office/50/accessibility2.png" alt="accessible" width={32} height={32}/>
               <span className="text text-base font-medium sm:text-lg">Accessibility Suite</span>
               <p className="text-sm md:text-base">We have incorporated extensible list of tools for easy navigation, so nothing can stop you. </p>
             </div>
@@ -192,14 +192,14 @@ export default function Home() {
             </div>
 
             <div className="row-span-3 col-span-1 w-full h-full flex flex-col gap-2 items-start p-3 bg-[#7678ed]/30 rounded-md">
-              <img src="https://img.icons8.com/deco-color/48/shield.png" alt="safety" width={32} height={32}/>
+              <Image src="https://img.icons8.com/deco-color/48/shield.png" alt="safety" width={32} height={32}/>
               <span className="text-lg font-semibold">Safety Center Access</span>
               <p className="text-sm md:text-base">You’re always in control, share your data when and whom you want for your total security</p>
             </div>
 
             <div className="row-span-3 col-span-1 bg-white border rounded-md overflow-hidden md:col-span-2">
               <div className="w-full h-full flex flex-col p-4">
-                <img src="https://img.icons8.com/fluency/48/bard.png" alt="ai" width={32} height={32}/>
+                <Image src="https://img.icons8.com/fluency/48/bard.png" alt="ai" width={32} height={32}/>
                 <p className="text text-base font-medium sm:text-lg">AI Content Safety</p>
                 <p className="text-sm md:text-base">Automated monitoring to detect, prevent, and flag abusive language, scams, and inappropriate content for proactive protection.</p>
               </div>

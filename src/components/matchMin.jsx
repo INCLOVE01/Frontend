@@ -4,7 +4,7 @@ import { Skeleton } from "./ui/skeleton";
 import Image from "next/image";
 import { Drawer, DrawerContent, DrawerTrigger } from "./ui/drawer";
 import MatchCard from "./matchCard";
-import { Dialog, DialogContent, DialogTrigger } from "@radix-ui/react-dialog";
+
 
 
 const url = process.env.NEXT_PUBLIC_URL
@@ -19,12 +19,12 @@ export default function MatchMin(){
 
 const FetchMatch = async()=>{
     try{
-        const req = await fetch(`${url}/api/userhome/match`)
+        const req = await fetch(`/api/userhome/match`)
         if(!req.ok) return <p>No match formed yet...</p>
         const resp = await req.json()
         return(
             <>
-                <div className="w-full h-fit grid grid-cols-2 md:grid-cols-3 auto-rows-auto gap-2">
+                <div className="w-full h-fit grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-auto gap-2">
                     {resp.data.map((item,index)=>(
                         <ProfileCard key={index} item={item}/>
                     ))}                  
