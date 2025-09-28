@@ -19,7 +19,7 @@ export default function MatchMin(){
 
 const FetchMatch = async()=>{
     try{
-        const req = await fetch(`${url}/api/userhome/match`)
+        const req = await fetch(`/api/userhome/match`)
         if(!req.ok) return <p>No match formed yet...</p>
         const {data} = await req.json()
         return(

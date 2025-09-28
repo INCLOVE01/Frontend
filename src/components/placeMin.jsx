@@ -18,7 +18,7 @@ export default function PlaceMin(){
 
 const FetchPlaces = async()=>{
     try{
-        const req = await fetch(`${url}/api/place`)
+        const req = await fetch(`/api/place`)
         if(!req.ok){
             return(
                 <p>Server Error</p>

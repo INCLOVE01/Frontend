@@ -16,7 +16,7 @@ export default function CommunityMin(){
 
 const FetchCommunity = async()=>{
     try{
-        const req = await fetch(`${url}/api/community/min`)
+        const req = await fetch(`/api/community/min`)
         if(!req.ok) {
             return (
                 <>
