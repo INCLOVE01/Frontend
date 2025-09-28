@@ -1,9 +1,7 @@
 
 import React, { Suspense } from "react"
 
-
 const url = process.env.NEXT_PUBLIC_URL
-
 
 export default function CommunityMin(){
     return(
@@ -18,10 +16,14 @@ export default function CommunityMin(){
 
 const FetchCommunity = async()=>{
     try{
-        const req = await fetch(`/api/community/min`)
-        if(!req.ok) return (
-            <p>Server error</p>
-        )
+        const req = await fetch(`${url}/api/community/min`)
+        if(!req.ok) {
+            return (
+                <>
+                    <p>Server error</p>
+                </>
+            )
+        }
         const resp = await req.json()
        if(!resp.data.length){
         return <p>Join communities for exciting adventure</p>

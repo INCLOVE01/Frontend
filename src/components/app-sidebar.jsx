@@ -32,7 +32,7 @@ const data = {
   navMain: [
     {
       title: "Home",
-      url: "/",
+      url: "/home",
       icon: HomeIcon,
       isActive: true,
     },
@@ -44,13 +44,13 @@ const data = {
     },
     {
       title: "Message",
-      url: "/",
+      url: "#",
       icon: MessageCircleIcon,
       isActive: false,
     },
     {
       title: "Setting",
-      url: "/",
+      url: "#",
       icon: SettingsIcon,
       isActive: false,
     },

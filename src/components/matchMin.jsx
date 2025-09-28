@@ -19,13 +19,13 @@ export default function MatchMin(){
 
 const FetchMatch = async()=>{
     try{
-        const req = await fetch(`/api/userhome/match`)
+        const req = await fetch(`${url}/api/userhome/match`)
         if(!req.ok) return <p>No match formed yet...</p>
-        const resp = await req.json()
+        const {data} = await req.json()
         return(
             <>
                 <div className="w-full h-fit grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-auto gap-2">
-                    {resp.data.map((item,index)=>(
+                    {data.map((item,index)=>(
                         <ProfileCard key={index} item={item}/>
                     ))}                  
                 </div>
