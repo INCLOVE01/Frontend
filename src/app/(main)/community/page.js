@@ -1,15 +1,10 @@
+import React from "react";
 import Main from "./main";
-
-
 
 export default function Page(){
     return(
         <>
-        <div className="relative w-full flex-1">
             <Main/>
-        </div>
-
         </>
     )
 }
-

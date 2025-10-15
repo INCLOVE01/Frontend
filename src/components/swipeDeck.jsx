@@ -17,38 +17,43 @@ export default function SwipeDeck(){
     const [cardNo, setCardNo] = useState(0)
     const [like, setLike] = useState(false)
     const {data,isLoading , refetch, error, isFetchNextPageError, hasNextPage, isFetchingNextPage, fetchNextPage} = useInfiniteQuery(createMatchInfiniteQueryOptions(id))
-
-    if(isFetchNextPageError) toast.error('Unable to fetch data')    
+    
+    if(isFetchNextPageError){ 
+      toast.error('Unable to fetch data')    
+    }
 
     function handleSwipe(id,dir) {
       if(like) return
+
       function removeCard(index){
         const newCardArr = cards.filter(item => item.id !== index)
         setCardNo(cardNo+1)
         setCards(newCardArr)
       }
+
       if(cards.length>1 && dir === 'left'){        
         removeCard(id)
       } else if(cards.length>1 && dir === 'right'){
         setLike(true)
         setTimeout(() => {
-          setLike(false)
           removeCard(id)
         }, 800);
+
       }
+
       if(cards.length == 4){
         fetchNextPage()
       }   
+    }
+    function checkLike(){
+      if(like) setLike(false)
     }
 
     useEffect(() => {
       if (data) {
         const allUsers = data.pages[data.pages.length-1].resp.users
-      
-        console.log('newpage')
         if(cards.length){
-          setCards(prev => {return [...prev,...allUsers]})
-          console.log(cards.map(n=>n.id),allUsers.map(n => n.id))
+          setCards(prev => {return [...allUsers,...prev]})
         } else{
           setCards(allUsers)
         }
@@ -76,7 +81,7 @@ export default function SwipeDeck(){
             <div className={`absolute left-1/2 top-1/2 -translate-1/2 z-[99] w-28 aspect-square place-items-center ${like? 'grid animate-ping' : 'hidden'}`}>
               <Heart size={100} stroke="#none" fill="#9e2a2b" className="drop-shadow-2xl"/>
             </div>
-            <AnimatePresence onExitComplete={()=>console.log('done')}>
+            <AnimatePresence onExitComplete={()=>checkLike}>
               {cards.map((card) => (
                 <TinderCard decline={handleSwipe}
                   key={card.id}
@@ -132,8 +137,8 @@ const TinderCard = ({card, onSwipe, decline})=>{
     return(
         <>
         <motion.div
-          className="row-span-1 col-span-1 w-full h-[90%] flex flex-col bg-slate-50  p-3 rounded-xl overflow-hidden border"
-          style={{gridRow:1, gridColumn:1, x, opacity, rotate}}
+          className="absolute row-span-1 col-span-1 w-full h-[90%] flex flex-col bg-slate-50  p-3 rounded-xl overflow-hidden border"
+          style={{x, opacity, rotate}}
           drag="x"
           dragConstraints={{left:0,right:0}}
           onDragEnd={handleDragEnd}
