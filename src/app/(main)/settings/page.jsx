@@ -6,23 +6,27 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-
 import { cn } from "@/lib/utils";
-
+import { useSettingsStore } from "@/lib/SettingProvider";
 import {  ALargeSmallIcon, ContrastIcon, Eye, Keyboard, MessageCircle, Mic2 } from "lucide-react";
 import React, { useEffect, useState } from "react";
+import ThemeSwitcher from "@/components/theme-switcher";
 
 export default function Page(){
-    const [visual,setVisual] = useState({textsize: '25', contrastmode:'Normal', colorvision:'Normal Vision', reducemotion:false})
-    const [audioSetting,setAudioSetting] = useState({screenreadersupport:false, voicecommands:false, soundeffects:false})
-    const [navSetting,setNavSetting] = useState({enhancedkeyboardnav:false, enhancedfocusind:false, skipnavlinks:false})
-    const [communicationSetting,setCommunicationSetting] = useState({autocaptions:false, signlanguagesupport:false, messageformat:'Text Messages'})
-    const [unsavedChanges, setUnsavedChanges] = useState(false)
+    const [mount, setMount] = useState(false)
+    const [visual,setVisual] = useState({textsize: '25', contrastmode:'Normal', colorvision:'Normal Vision', reducemotion:false}) //variable for visual settings
+    const [audioSetting,setAudioSetting] = useState({screenreadersupport:false, voicecommands:false, soundeffects:false}) //variable for audio settings
+    const [navSetting,setNavSetting] = useState({enhancedkeyboardnav:false, enhancedfocusind:false, skipnavlinks:false}) //variable for navigation settings
+    const [communicationSetting,setCommunicationSetting] = useState({autocaptions:false, signlanguagesupport:false, messageformat:'Text Messages'}) //variable for communication settings
+    const [unsavedChanges, setUnsavedChanges] = useState(false) //variable to save changes
+    const theme = useSettingsStore(s => s.theme)
 
+    
     function changeVisualSetting(setting,value){
         if(setting === 'textsize'){
             setVisual(prev => ({ ...prev, textsize : `${value}`}))
             setUnsavedChanges(true)
+            
         }
         else if(setting === 'contrastmode'){
             setVisual(prev => ({ ...prev, contrastmode : `${value}`}))
@@ -80,7 +84,7 @@ export default function Page(){
     }
 
     function changeCommunicationSettings(setting,value){
-        console.log(setting,value)
+       
         if(setting === 'messageformat'){
             setCommunicationSetting(prev => ({ ...prev, messageformat : `${value}`}))
             setUnsavedChanges(true)
@@ -100,15 +104,15 @@ export default function Page(){
     }
 
     function saveChanges(){
-        console.log('saved')
         
+     console.log(theme)
 
     }
 
 
     return(
         <>
-            <div className="w-full h-max flex flex-col gap-3 lg:grid lg:grid-cols-2 lg:justify-items-center lg:gap-y-8">
+            <div className=" w-full h-max flex flex-col gap-3 lg:grid lg:grid-cols-2 lg:justify-items-center lg:gap-y-8">
 
                 <div className="w-full h-max flex flex-col gap-2 py-4 lg:col-span-2 md:flex-row md:justify-between">
                     <div className="flex h-fit flex-col gap-2">
@@ -116,7 +120,7 @@ export default function Page(){
                         <span className="text-sm text-neutral-600 max-w-lg">Customize your Inclove experience to match your needs. These settings will be saved and applied across the entire platform.</span>
                     </div>
                     <div>
-                        <Button variant={'default'} disabled={!unsavedChanges}>save</Button>
+                        <Button variant={'default'} disabled={!unsavedChanges} onClick={saveChanges}>save</Button>
                     </div>
                 </div>
                 
@@ -129,6 +133,7 @@ export default function Page(){
                         <div className="w-[99%] h-0.5 bg-neutral-200 mt-2"></div>
                     </CardHeader>
                     <CardContent className={'w-full h-fit flex flex-col gap-8'}>
+                        <ThemeSwitcher/>
                         <div className="w-full h-fit flex justify-between items-start">
                             <div className="flex-1 h-fit flex flex-col">
                                 <span>Text Size</span>

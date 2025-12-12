@@ -15,6 +15,7 @@ import { global } from "styled-jsx/css";
 import * as motion from "motion/react-client"
 import TestCarousal from "@/components/interactive/carousel";
 import Carousal1 from "@/components/interactive/carousal1";
+import MainNavbar from "@/components/navbar/main-navbar";
 
 
 export default function Home() {
@@ -22,16 +23,17 @@ export default function Home() {
   return (
     <>
       <div className="relative w-full h-fit flex flex-col items-center">
-        <div className="fixed top-3 z-10 w-[90%] max-w-xl h-10 rounded-lg border bg-white/20 backdrop-blur-md shadow-sm flex items-center justify-evenly px-4 py-2">
+        {/* <div className="fixed top-3 z-10 w-[90%] max-w-xl h-10 rounded-lg border bg-white/20 backdrop-blur-md shadow-sm flex items-center justify-evenly px-4 py-2">
           <Button variant={'default'} className={'h-fit py-1.5'} >Inclove</Button>
           <Button variant={'ghost'} >About</Button>
           <Button variant={'ghost'} >Contact Us</Button>
-          {/* <Button variant={'ghost'} >Guide</Button> */}
+          
           <Button variant={'ghost'} className={'h-fit py-1.5'} >
             <Link href={'/auth/login'}>Login</Link>
           </Button>                                
 
-        </div>
+        </div> */}
+        {/* <MainNavbar/> */}
         {/* hero */}
         <div className="relative w-full h-screen flex flex-col bg-gradient-to-b from-0% from-[#654ea3] to-100% to-[#eaafc8] overflow-hidden md:h-[calc(100vh-1rem)]"> 
           <div className="relative w-full max-w-5xl h-1/2 flex flex-col gap-3 items-center justify-center m-auto md:gap-7 md:justify-end py-5 px-4">

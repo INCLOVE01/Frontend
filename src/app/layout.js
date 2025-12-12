@@ -3,6 +3,7 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
 import QueryClientProviders from "@/components/queryClientProviders";
+import MainNavbar from "@/components/navbar/main-navbar";
 
 
 const geistSans = Geist({
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
       >
         <Toaster />
           <QueryClientProviders>
+        <MainNavbar/>
             {children}
           </QueryClientProviders>
       </body>
