@@ -1,0 +1,39 @@
+.chat-left{
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    margin: 30px;
+}
+
+.chat-left img{
+    width: 50px;
+    border-radius: 50%;
+}
+
+.chat-left h3{
+    margin-left: 10px;
+    font-size: 20px;
+    border: 0.5px solid #ccc;
+    border-radius: 30px;
+    padding: 5px 20px 5px 20px;
+}
+
+
+.chat-right{
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin: 30px;
+}
+.chat-right img{
+    width: 50px;
+    border-radius: 50%;
+
+}
+.chat-right h3{
+    margin-right: 10px;
+    font-size: 20px;
+    border: 0.5px solid #ccc;
+    border-radius: 30px;
+    padding: 5px 20px 5px 20px;
+}
