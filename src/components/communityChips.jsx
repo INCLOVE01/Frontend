@@ -27,8 +27,8 @@ function Chip({url,title}){
     return(
         <>
         <div className="w-fit h-fit flex flex-col items-center overflow-hidden">
-            <div className="w-24 aspect-square rounded-full border bg-slate-100"></div>
-            <span>{title}</span>
+            <div className="w-24 aspect-square rounded-full border bg-red-100"></div>
+            <span className="text-primary">{title}</span>
         </div>
         </>
     )

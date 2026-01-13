@@ -130,7 +130,7 @@ export default function Page(){
                     <CardHeader className={' h-fit flex flex-col gap-1'}>
                         <span className="w-fit flex items-center gap-2"><Eye size={16}/> Visual Settings</span>
                         <span className="text-sm text-neutral-500">Adjust display options for better visibility</span>
-                        <div className="w-[99%] h-0.5 bg-neutral-200 mt-2"></div>
+                        <div className="w-[99%] h-0.5 bg-neutral-200 mt-2"></div>   
                     </CardHeader>
                     <CardContent className={'w-full h-fit flex flex-col gap-8'}>
                         <ThemeSwitcher/>
