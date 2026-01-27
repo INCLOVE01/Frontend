@@ -1,20 +1,15 @@
-import CardStack from "@/components/cardStack";
-import CommunityPost from "@/components/interactive/communityPost";
-import ImagePost from "@/components/interactive/imagePost";
-import InfiniteScroll from "@/components/interactive/infinite-scroll";
-import { Commons, Community, DynamicImg, MatchCard, PopRevealCard, ProfileCard, RotateDiv, SquarePop, TestimonialCard, TextReveal, WavyText, ZoomImg } from "@/components/interactive/matchCard";
-import Poll from "@/components/interactive/poll";
-import RevealDiv from "@/components/revealDiv";
+
+import { MatchCard } from "@/components/interactive/matchCard";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { ArrowUpRight, Bell, BellRing, HeartIcon, MapPin, MessageCircleMore, Music4, ScanFace, Send, ShieldCheck, Sparkles, SparklesIcon, Star, Strikethrough, ThumbsUp, User, UserCircle2Icon, Verified, VerifiedIcon } from "lucide-react";
+import { ArrowUpRight,  VerifiedIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import { global } from "styled-jsx/css";
-import * as motion from "motion/react-client"
-import TestCarousal from "@/components/interactive/carousel";
+
 import Carousal1 from "@/components/interactive/carousal1";
+
+import Waitlist from "@/components/waitlist/waitlist";
+import Footer from "@/components/footer";
+import WaitlistForm from "@/components/waitlist/waitlist-form";
 
 
 export default function Home() {
@@ -22,72 +17,21 @@ export default function Home() {
   return (
     <>
       <div className="relative w-full h-fit flex flex-col items-center">
-        <div className="fixed top-3 z-10 w-[90%] max-w-xl h-10 rounded-lg border bg-white/20 backdrop-blur-md shadow-sm flex items-center justify-evenly px-4 py-2">
+        {/* <div className="fixed top-3 z-10 w-[90%] max-w-xl h-10 rounded-lg border bg-white/20 backdrop-blur-md shadow-sm flex items-center justify-evenly px-4 py-2">
           <Button variant={'default'} className={'h-fit py-1.5'} >Inclove</Button>
           <Button variant={'ghost'} >About</Button>
           <Button variant={'ghost'} >Contact Us</Button>
-          {/* <Button variant={'ghost'} >Guide</Button> */}
+          
           <Button variant={'ghost'} className={'h-fit py-1.5'} >
             <Link href={'/auth/login'}>Login</Link>
           </Button>                                
 
-        </div>
+        </div> */}
+        {/* <MainNavbar/> */}
         {/* hero */}
-        <div className="relative w-full h-screen flex flex-col bg-gradient-to-b from-0% from-[#654ea3] to-100% to-[#eaafc8] overflow-hidden md:h-[calc(100vh-1rem)]"> 
-          <div className="relative w-full max-w-5xl h-1/2 flex flex-col gap-3 items-center justify-center m-auto md:gap-7 md:justify-end py-5 px-4">
-            {/* <h2 className="text-2xl font-bold w-fit flex flex-wrap justify-center gap-2 sm:text-3xl md:text-4xl "><span>Discover,</span> <span>Meet,</span> <span>Chat &</span> <span>Find Your</span> <span className="flex gap-2">Spark<Sparkles/></span> </h2> */}
-            <WavyText className={'text-white'} text={'Discover, Meet, Chat & Find Your Spark'}/>
-            <p className="hidden sm:flex text-base w-full max-w-3xl text-center text-white">Authentic Connections, Safe and Open for Everyone. Here, your true self is valued and protected—join a community built on trust, respect, and genuine connection</p>
-            <Button className={'w-fit h-fit py-2 bg-neutral-800'}>
-              <Link href={'/home'} className="flex items-center gap-1">Get Started <ArrowUpRight/></Link>
-            </Button>
-          </div>
-
-          <div className="relative w-full h-1/2 overflow-hidden mt-auto ">
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full">
-              <Image src={'/images/1.png'} alt="img" width={1080} height={700} className="w-full h-full object-cover object-bottom"/>
-            </div>
-
-            <div className="absolute z-10 top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-full grid grid-cols-4 grid-rows-4">
-
-              <div className="row-start-2 col-start-2 w-fit h-fit flex items-center gap-2 bg-white rounded-xl shadow-sm px-2 py-1">
-                <HeartIcon fill="red" stroke="none"/> <Send/> <MessageCircleMore/>
-              </div>
-
-              <MapPin fill="white" stroke="gray"  className="row-start-4 col-start-2"/>
-              <MapPin fill="white"  className="row-start-3 col-start-3 place-self-center justify-self-end"/>
-              <MapPin fill="white"  className="row-start-2 col-start-3 place-self-center justify-self-center hidden md:flex"/>
+        <Waitlist/>
 
 
-              <div className=" relative row-start-2 col-start-2 col-end-4 row-end-3 w-32 h-fit bg-slate-50 rounded-xl rounded-br-none shadow-sm p-2 justify-self-center">
-                <Image src={'/images/pp6.jpg'} alt="img" width={500} height={500} className="w-full aspect-square object-cover object-top rounded-md"/>
-                <span className="text-md font-semibold">Emma Dee, 24</span>
-                <MapPin fill="white"  className="absolute -bottom-5 right-0 "/>
-              </div>
-
-              {/* <div className="row-start-1 col-start-4 w-fit h-fit bg-white rounded-xl rounded-br-none items-center gap-2 px-2 py-1 hidden md:flex">
-                <Image src={'/images/pp6.jpg'} alt="img" width={100} height={100} className="w-11 aspect-square rounded-full object-cover overflow-hidden"/>
-                <span className="text-md font-semibold">I had a fun time with you!</span>
-              </div> */}
-
-              {/* <div className=" relative row-start-2 col-start-1 col-end-2 row-end-3 w-32 h-fit bg-slate-50 rounded-xl rounded-br-none shadow-sm p-2 justify-self-center -rotate-25 scale-40 flex flex-col">
-                <Image src={'/images/pp3.jpg'} alt="img" width={500} height={500} className="w-full aspect-square object-cover object-top rounded-md"/>
-                <span className="text-md font-semibold">Emma Dee, 24</span>
-                <MapPin fill="white"  className="absolute -bottom-5 right-0 shadow-sm "/>
-              </div> */}
-
-              
-            </div>
-
-            
-             
-          
-
-           
-          </div>
-
-
-        </div>
 
         {/* intro */}
         <div className="w-full h-fit px-4 mt-20 md:mt-30">
@@ -231,8 +175,18 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <Spacer/>
-        
+        <div className="w-full h-max p-4 my-8 sm:my-12 md:my-16">
+            <div className="w-full max-w-3/4 m-auto bg-blue-200 h-max flex flex-col gap-4 sm:rounded-md sm:p-8 md:p-16 md:flex-row md:justify-center md:items-center md:gap-8">
+              <div className="flex flex-col flex-1">
+                <span className="text-lg font-medium md:text-xl md:font-bold">Join an inclusive community</span>
+                <span>stay in the loop by joining us</span>
+              </div>
+              <div className="flex-1">
+                <WaitlistForm/>
+              </div>
+            </div>
+        </div>
+        <Footer/>
       </div>
     </>
   );

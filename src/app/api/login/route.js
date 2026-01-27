@@ -1,40 +1,30 @@
+import { AuthService } from "@/lib/auth";
+import { NextResponse } from "next/server";
+
 
 export async function POST(request) {
-    const data = await request.formData()
-    const email = data.get("email");
-    const password = data.get("password"); 
+    const {email, password} = await request.json()
+    console.log(email,password)
 
-    if(!email || !password){
-        return Response.json(
-            { message: 'Invalid Credentials', status: 400 },
-            { status: 400 }
-        )
-    }       
-    try{
-        const payload ={
-            email, rawPassword : password
-        }
-        const response = await fetch(`${process.env.NEXT_BACKENED_URL}/auth/login`, {
-            method: 'POST',
-            headers: {
-            'Content-Type': 'application/json', // Corrected header key
-            },
-            body: JSON.stringify(payload),
-            redirect: 'follow',
-        });
+    // 1. VALIDATE USER (Dummy logic for now)
+    if (email === "userTest@inclove.in" && password === "Inclove@123") {
+    const userId = "user_12345";
+    
+    // 2. CREATE JWT
+    const token = await AuthService.createToken({ userId, email });
 
-        const data = await response.json();
-        
-        if(data.status == 200) {
-            return Response.json({message : 'success', status : 200},{status:200})   
-        } else{
-            return Response.json({message : 'account does not exists', status : 400}, {status:400})   
-        }
+    // 3. SET HTTP-ONLY COOKIE
+    const response = NextResponse.json({ success: true, message:"success" },{status:200});
+    response.cookies.set('auth-token', token, {
+      httpOnly: true,    // Prevent XSS
+      secure: true,      // Only HTTPS
+      sameSite: 'lax',   // CSRF Protection
+      path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
 
-    } catch(e){
-        return Response.json(
-            { message: 'Server Error', status: 500 },
-            { status: 500 }
-        );
-    }
+    return response;
+  }      
+    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
+
 }

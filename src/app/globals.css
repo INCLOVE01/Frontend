@@ -134,6 +134,36 @@
   /* transform: rotate(-10deg); */
   animation: card-right-cheers 1.5s cubic-bezier(.62,.05,.18,.95) both ;
 }
+
+ :root,
+  .dark {
+    /* Transition ALL color vars smoothly */
+    transition-property: 
+      background-color, 
+      color, 
+      border-color, 
+      text-shadow,
+      box-shadow;
+    
+    transition-duration: 0.4s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* smooth ease */
+  }
+  
+  /* Also transition Tailwind color classes that map to CSS vars */
+  *,
+  *::before,
+  *::after {
+    transition-property: 
+      background-color,
+      color,
+      border-color,
+      box-shadow,
+      fill,
+      stroke;
+    
+    transition-duration: inherit;
+    transition-timing-function: inherit;
+}
 }
 
 .scrollinfinite {
@@ -185,3 +215,13 @@
   100% { rotate : 0deg }
 }
 
+.PhoneInput {
+  --PhoneInputCountryFlag-height: 20px;
+  --PhoneInput-color--focus: #007bff;
+  --PhoneInputCountrySelectArrow-background-color: #3b82f6;
+  --PhoneInputCountrySelect-color: #374151;
+  --PhoneInputCountryFlag-height: 24px;
+  --PhoneInputCountrySelect-padding: 12px;
+  --PhoneInput-input-height: 44px;
+  --PhoneInput-input-font-size: 16px;
+}
