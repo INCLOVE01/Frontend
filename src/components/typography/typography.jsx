@@ -35,7 +35,7 @@ function H4({children, className}) {
 function Para({children, className}){
 
   return (
-    <p className={cn("leading-7 [&:not(:first-child)]:mt-6",className)}>
+    <p className={cn("leading-6",className)}>
       {children}
     </p>
   )
@@ -53,7 +53,7 @@ function Blockquote({children,className}) {
 function Span({children, className}){
 
   return (
-    <span className={cn("leading-7 [&:not(:first-child)]:mt-6",className)}>
+    <span className={cn("leading-7 ",className)}>
       {children}
     </span>
   )

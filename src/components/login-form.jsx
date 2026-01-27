@@ -11,33 +11,56 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import Link from "next/link"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 const formSchema = z.object({
   email : z.email({error:'incorrect email'}),
-  password : z.string({error:'password is required'})
+  password : z.string().min(8,'min 8 characters')
 })
 
-export function LoginForm({
-  className,
-  ...props
-}) {
+export function LoginForm({className, ...props}) {
+  
+  const [submit, setSubmit] = useState(false)
+  const router = useRouter()
+
   const form = useForm({
     resolver : zodResolver(formSchema),
     defaultValues:{
-      email : '', password : ''
+      email : '', 
+      password : ''
     }
   })
+
   const onSubmit = async (formData) => {
+    setSubmit(true)
     const {email, password} = formData
     if(!email && !password) return
-    else{
-      toast.success('Login successful', {position:'top-center', style:{ color:'green'}})
+    const req = await fetch(`/api/login`,{
+      method : "POST",
+      body : JSON.stringify(formData)
+    })
+
+    const resp = await req.json()
+    if(resp.success == true){
+    toast.success('Login successful. Redirecting', {position:'top-center', style:{ color:'green'}})
+    setTimeout(() => {
+        router.push('/home')
+    }, 1000);
+
+    } else{
+      toast.error('Login fail', {position:'top-center', style:{color : "red"} })
+      form.reset()
+      setSubmit(false)
     }
+
   }
   return (
     <div className={cn(" flex flex-col gap-6", className)} {...props}>
+
       <Card className=" overflow-hidden p-0 shadow-transparent border-transparent">
         <CardContent className="p-6">
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-0 md:p-8">
               <div className="flex flex-col gap-6">
@@ -47,6 +70,8 @@ export function LoginForm({
                     Login to continue to your favourite place!
                   </p>
                 </div>
+
+                {/* email */}
                 <FormField 
                   control = {form.control} name = 'email' render = {({field})=>(
                     <FormItem>
@@ -58,6 +83,8 @@ export function LoginForm({
                     </FormItem>
                   )}  
                 />
+
+                {/* password */}
                 <div className="grid gap-3">
                   <FormField 
                   control = {form.control} name = 'password' render = {({field})=>(
@@ -69,16 +96,18 @@ export function LoginForm({
                         </a>
                       </div>
                       <FormControl>
-                        <Input placeholder="your password here" {...field}/>
+                        <Input placeholder="your password here" {...field} type={"password"} />
                       </FormControl>
                       <FormMessage/>
                     </FormItem>
                   )}  
                 />
                 </div>
-                <Button type="submit" className="w-full">
-                  Login
+
+                <Button type="submit" className="w-full" disabled={submit}>
+                  {submit ? <span>...</span> : <span>Submit</span>}
                 </Button>
+
                 <div
                   className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">

@@ -215,3 +215,13 @@
   100% { rotate : 0deg }
 }
 
+.PhoneInput {
+  --PhoneInputCountryFlag-height: 20px;
+  --PhoneInput-color--focus: #007bff;
+  --PhoneInputCountrySelectArrow-background-color: #3b82f6;
+  --PhoneInputCountrySelect-color: #374151;
+  --PhoneInputCountryFlag-height: 24px;
+  --PhoneInputCountrySelect-padding: 12px;
+  --PhoneInput-input-height: 44px;
+  --PhoneInput-input-font-size: 16px;
+}
