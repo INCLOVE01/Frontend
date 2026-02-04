@@ -1,30 +1,68 @@
 import { AuthService } from "@/lib/auth";
 import { NextResponse } from "next/server";
-
+import connectDB from "@/lib/mongodb";
+import User from "@/models/User";
 
 export async function POST(request) {
-    const {email, password} = await request.json()
-    console.log(email,password)
+  try {
+    const { email, password } = await request.json();
 
-    // 1. VALIDATE USER (Dummy logic for now)
-    if (email === "userTest@inclove.in" && password === "Inclove@123") {
-    const userId = "user_12345";
-    
-    // 2. CREATE JWT
-    const token = await AuthService.createToken({ userId, email });
+    if (!email || !password) {
+      return NextResponse.json(
+        { error: "Email and password are required" },
+        { status: 400 }
+      );
+    }
 
-    // 3. SET HTTP-ONLY COOKIE
-    const response = NextResponse.json({ success: true, message:"success" },{status:200});
-    response.cookies.set('auth-token', token, {
-      httpOnly: true,    // Prevent XSS
-      secure: true,      // Only HTTPS
-      sameSite: 'lax',   // CSRF Protection
-      path: '/',
+    // Connect to MongoDB
+    await connectDB();
+
+    // Find user by email
+    const user = await User.findOne({ email: email.toLowerCase() });
+
+    if (!user) {
+      return NextResponse.json(
+        { error: "Invalid credentials" },
+        { status: 401 }
+      );
+    }
+
+    // Compare password
+    const isPasswordValid = await user.comparePassword(password);
+
+    if (!isPasswordValid) {
+      return NextResponse.json(
+        { error: "Invalid credentials" },
+        { status: 401 }
+      );
+    }
+
+    // Create JWT token
+    const token = await AuthService.createToken({
+      userId: user._id.toString(),
+      email: user.email,
+    });
+
+    // Set HTTP-only cookie
+    const response = NextResponse.json(
+      { success: true, message: "Login successful" },
+      { status: 200 }
+    );
+
+    response.cookies.set("auth-token", token, {
+      httpOnly: true, // Prevent XSS
+      secure: process.env.NODE_ENV === "production", // Only HTTPS in production
+      sameSite: "lax", // CSRF Protection
+      path: "/",
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
 
     return response;
-  }      
-    return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
-
+  } catch (error) {
+    console.error("Login error:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
 }
