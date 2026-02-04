@@ -45,11 +45,11 @@ export function LoginForm({className, ...props}) {
     if(resp.success == true){
     toast.success('Login successful. Redirecting', {position:'top-center', style:{ color:'green'}})
     setTimeout(() => {
-        router.push('/home')
+        router.push('/user-page')
     }, 1000);
 
     } else{
-      toast.error('Login fail', {position:'top-center', style:{color : "red"} })
+      toast.error(resp.error || 'Login failed', {position:'top-center', style:{color : "red"} })
       form.reset()
       setSubmit(false)
     }

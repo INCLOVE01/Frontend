@@ -95,6 +95,7 @@ export function Step1({setFormStep}){
 
   let [formSubmit, setFormSubmit] = useState(false)
   let [passVisible, setPassVisible] = useState('password')
+  const router = useRouter()
   const form = useForm({
       resolver : zodResolver(step1Schema),
       defaultValues : {
@@ -108,28 +109,68 @@ export function Step1({setFormStep}){
     const {email, password, userId} = formData
     if(email && password && userId){
       try{
-          setFormSubmit = true
-          const formData = new FormData();
-          formData.append("email", email);
-          formData.append("password", password);
-          formData.append("userId", userId);
+          setFormSubmit(true)
+          const formDataToSend = new FormData();
+          formDataToSend.append("email", email);
+          formDataToSend.append("password", password);
+          formDataToSend.append("userId", userId);
 
           const req = await fetch(`/api/signup`, {
           method: "POST",
-          body: formData, 
+          body: formDataToSend, 
           });
 
           const resp = await req.json()
-          setFormSubmit = false
+          
           if(resp.status == 200){
-            setFormSubmit(false)
-            setFormStep(2)
+            toast.success('Registration successful! Logging you in...', {
+              position: 'top-center',
+              style: { color: 'green' }
+            })
+            
+            // Automatically log in the user after registration
+            try {
+              const loginReq = await fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+              })
+
+              const loginResp = await loginReq.json()
+              
+              if (loginResp.success) {
+                setTimeout(() => {
+                  router.push('/user-page')
+                }, 1000)
+              } else {
+                // If auto-login fails, redirect to login page
+                toast.error('Registration successful. Please login.', {
+                  position: 'top-center',
+                  style: { color: 'orange' }
+                })
+                setTimeout(() => {
+                  router.push('/auth/login')
+                }, 1500)
+              }
+            } catch (loginError) {
+              // If auto-login fails, redirect to login page
+              toast.error('Registration successful. Please login.', {
+                position: 'top-center',
+                style: { color: 'orange' }
+              })
+              setTimeout(() => {
+                router.push('/auth/login')
+              }, 1500)
+            }
           } else{
               toast.error(resp.message,{position:"top-center", style:{color:'red'}})
-
+              setFormSubmit(false)
           }
       } catch(e){
         toast.error('Server Error',{position:"top-center", style:{color:'red'}})
+        setFormSubmit(false)
       }
     }
     
