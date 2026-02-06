@@ -30,4 +30,4 @@ export const AuthService = {
     if (!token) return null;
     return await this.verifyToken(token);
   }
-};
+}

@@ -6,13 +6,7 @@ import { Instagram } from "lucide-react";
 import { Twitter } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-
-const socialLinks = {
-    facebook : '/',
-    instagram : '/',
-    twitter : '/',
-    discord : '',
-}
+import { socialLinks, footerLink } from "@/lib/nav-routes";
 
 export default function Footer(){
     return(
@@ -23,27 +17,27 @@ export default function Footer(){
                     <H3>Inclove</H3>
                     <Para className={'font-medium text-accent-foreground/90 border-b border-white pb-1 w-max'}>A community built on trust, respect and genuine connections</Para>
                     <div className="flex gap-4 mt-2 sm:mt-4">
-                        <Link href={socialLinks.facebook}>
+                        <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer">
                             <Image width={44} height={44} className="w-7 aspect-square" src="https://img.icons8.com/softteal-line/44/facebook-new.png" alt="facebook-new"/>
-                        </Link>
-                        <Link href={socialLinks.instagram}>
-                            <Image width={44} height={44} className="w-7 aspect-square" src="https://img.icons8.com/material/44/instagram-new--v1.png" alt="instagram-new--v1"/>
-                        </Link>
-                        <Link href={socialLinks.twitter}>
+                        </a>
+                        <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer">
+                            <Image width={44} height={44} className="w-7 aspect-square" src="https://img.icons8.com/material/44/instagram-new--v1.png" alt="instagram-new--v1"/>                            
+                        </a>
+                        <a href={socialLinks.x} target="_blank" rel="noopener noreferrer">
                             <Image width={44} height={44} className="w-7 aspect-square" src="https://img.icons8.com/material-sharp/24/twitterx--v2.png" alt="x-new"/>
-                        </Link>
-                        <Link href={socialLinks.discord}>
-                            <Image width={44} height={44} className="w-7 aspect-square" src="https://img.icons8.com/material-rounded/44/discord-logo.png" alt="discord-new"/>
-                        </Link>
+                        </a>
+                        <a href={socialLinks.discord} target="_blank" rel="noopener noreferrer">
+                            <Image width={44} height={44} className="w-7 aspect-square" src="https://img.icons8.com/material-rounded/44/discord-logo.png" alt="discord-new"/>                            
+                        </a>
                     </div>
                 </div>
                 <div className=" flex flex-wrap justify-between md:justify-evenly md:col-span-1 md:row-span-1">
                     <div className="flex flex-col w-max h-max ">
                         <span className="font-semibold text-lg text-primary border-b border-primary/50 w-max">Useful Links</span>
-                        <Span className={' text-accent-foreground/90 mt-2 hover:underline'}>About Us</Span>
-                        <Span className={' text-accent-foreground/90 hover:underline'}>Resources</Span>
-                        <Span className={' text-accent-foreground/90 hover:underline'}>Contact Us</Span>
-                        <Span className={' text-accent-foreground/90 hover:underline'}>Join Us</Span>
+                        <Link href={footerLink.about} className={' text-accent-foreground/90 mt-2 hover:underline'}>About Us</Link>
+                        <Link href={footerLink.resources} className={' text-accent-foreground/90 hover:underline'}>Resources</Link>
+                        <Link href={footerLink.contact} className={' text-accent-foreground/90 hover:underline'}>Contact Us</Link>
+                        <Link href={footerLink.joinUs} className={' text-accent-foreground/90 hover:underline'}>Join Us</Link>
                     </div>
                     <div className="flex flex-col w-max h-max">
                         <span className="font-semibold text-lg text-primary border-b border-primary/50 w-max">Careers</span>

@@ -17,17 +17,7 @@ export default function Home() {
   return (
     <>
       <div className="relative w-full h-fit flex flex-col items-center">
-        {/* <div className="fixed top-3 z-10 w-[90%] max-w-xl h-10 rounded-lg border bg-white/20 backdrop-blur-md shadow-sm flex items-center justify-evenly px-4 py-2">
-          <Button variant={'default'} className={'h-fit py-1.5'} >Inclove</Button>
-          <Button variant={'ghost'} >About</Button>
-          <Button variant={'ghost'} >Contact Us</Button>
-          
-          <Button variant={'ghost'} className={'h-fit py-1.5'} >
-            <Link href={'/auth/login'}>Login</Link>
-          </Button>                                
 
-        </div> */}
-        {/* <MainNavbar/> */}
         {/* hero */}
         <Waitlist/>
 
@@ -36,9 +26,6 @@ export default function Home() {
         {/* intro */}
         <div className="w-full h-fit px-4 mt-20 md:mt-30">
           <p className="w-full max-w-4xl text-2xl text-start px-4 md:text-4xl">Inclove is a platform where you can meet and match without barriers or stereotypes, backed by cutting-edge security and privacy features, for people who want to go beyond their social circle & connect with people far and near..</p>
-          {/* <div className="w-full h-fit mt-20 md:mt-50">
-            <TestCarousal/>
-          </div> */}
         </div>
 
         <Spacer/>

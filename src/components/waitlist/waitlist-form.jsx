@@ -16,7 +16,8 @@ import { Label } from "../ui/label";
 import { VerifiedIcon } from "lucide-react";
 import { H3, Para } from "../typography/typography";
 import { XIcon } from "lucide-react";
-
+import { socialLinks } from "@/lib/nav-routes";
+import { CheckCircle2Icon } from "lucide-react";
 
 const formSchema = z.object({
   fullName: z
@@ -63,20 +64,28 @@ export default function WaitlistForm(){
             <FormComp email={email} formSuccess={setFormSuccess} />
     </Activity>
     <Activity mode={formSuccess ? "visible" : "hidden"}>
-      <div className="relative w-full max-h-max flex flex-col items-center gap-8 ">
+      <div className="relative w-full max-h-max flex flex-col items-center gap-4 ">
         <button className="absolute top-0 right-0 text-neutral-500" onClick={()=>{setOpen(false)}}><XIcon/></button>
-        <span><VerifiedIcon size={72} stroke="#52b788"/></span>
+        <span><CheckCircle2Icon size={72} color="white" fill="#4c956c" /></span>
         <div className="w-full h-max flex flex-col gap-2 items-center">
           <H3>Welcome to Inclove</H3>
-          <Para>You've been successfully added. We will notify you soon!!</Para>
+          <Para>You've been successfully added. Join us for regular updates!!</Para>
         </div>
         <div className="w-full h-max flex flex-col justify-start px-4 gap-2">
-          <span className="text-sm text-neutral-600">Join us for more updates:</span>
-          <div className="w-full h-max flex items-center justify-evenly gap-4">
-            <Button variant={'outline'} className={'w-max flex-1 bg-[#1877F2] text-white'}>facebook</Button>
-            <Button variant={'outline'} className={'w-max flex-1 bg-[#5865F2] text-white'}>Discord</Button>
-            <Button variant={'outline'} className={'w-max flex-1 bg-[#D300C5] text-white'}>Instagram</Button>
-            <Button variant={'outline'} className={'w-max flex-1 bg-neutral-800 text-white'}>X</Button>
+          {/* <span className="text-sm text-neutral-600">Join us for more updates:</span> */}
+          <div className="w-full h-max flex items-center justify-evenly gap-4 p-1">
+            <Button variant={'outline'} className={'w-max flex-1 bg-[#1877F2] text-white'}>
+              <a href={socialLinks.facebook} target="_blank" rel="noopener noreferrer">Facebook</a>
+            </Button>
+            <Button variant={'outline'} className={'w-max flex-1 bg-[#5865F2] text-white'}>
+              <a href={socialLinks.discord} target="_blank" rel="noopener noreferrer">Discord</a>
+            </Button>
+            <Button variant={'outline'} className={'w-max flex-1 bg-[#D300C5] text-white'}>
+              <a href={socialLinks.instagram} target="_blank" rel="noopener noreferrer">Instagram</a>
+            </Button>
+            <Button variant={'outline'} className={'w-max flex-1 bg-neutral-800 text-white'}>
+              <a href={socialLinks.x} target="_blank" rel="noopener noreferrer">X</a>
+            </Button>
           </div>
         </div>
       </div>
