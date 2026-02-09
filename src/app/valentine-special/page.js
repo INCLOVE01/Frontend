@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useWall } from "@/hooks/useWall";
-import PostCard from "@/components/valentine-special/post-card";
+import PostCard, { PostSkeleton } from "@/components/valentine-special/post-card";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CreatePostDialog from "@/components/valentine-special/createPostDialog"; // The form we discussed
 
@@ -21,7 +21,7 @@ export default function SelfLoveWall() {
       </header>
 
       <Tabs defaultValue="recent" onValueChange={setFilter} className="w-full">
-        <TabsList className="grid w-full max-w-[400px] grid-cols-2">
+        <TabsList className="grid w-full max-w-100 grid-cols-2">
           <TabsTrigger value="recent">Recent Thoughts</TabsTrigger>
           <TabsTrigger value="likes">Most Loved</TabsTrigger>
         </TabsList>
@@ -30,8 +30,12 @@ export default function SelfLoveWall() {
       {/* Grid Layout for Posts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {isLoading && (
-          // You can replace this with a Shadcn Skeleton later
-          <p className="text-center col-span-2 py-10">Loading the wall...</p>
+          <>
+            <PostSkeleton/>
+          <PostSkeleton/>
+          <PostSkeleton/>
+          </>
+
         )}
 
         {isError && (
@@ -39,9 +43,11 @@ export default function SelfLoveWall() {
         )}
 
         {!isLoading && posts?.length === 0 && (
-          <p className="text-center col-span-2 py-10 text-slate-400">
-            The wall is empty. Be the first to share!
-          </p>
+          <>
+            <PostSkeleton/>
+          <PostSkeleton/>
+          <PostSkeleton/>
+          </>
         )}
 
         {posts?.map((post) => (

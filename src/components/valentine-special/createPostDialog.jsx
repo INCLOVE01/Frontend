@@ -3,21 +3,17 @@
 import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { handlePostSubmission } from "@/app/actions/wallActions";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from "@/components/ui/dialog";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Heart, Loader2 } from "lucide-react";
+import WaitlistForm from "../waitlist/waitlist-form";
+
+
+// ... other imports (Input, Textarea, Select, etc.)
 
 export default function CreatePostDialog() {
   const [open, setOpen] = useState(false);
+  const [showWaitlist, setShowWaitlist] = useState(false);
+  const [emailAttempt, setEmailAttempt] = useState("");
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -25,83 +21,46 @@ export default function CreatePostDialog() {
     onSuccess: (data) => {
       if (data.success) {
         queryClient.invalidateQueries(['posts']);
-        setOpen(false); // Close dialog on success
+        setOpen(false);
+      } else if (data.error === "NOT_ON_WAITLIST") {
+        setShowWaitlist(true); // TRIGGER: User not found, show waitlist form
       }
     }
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    setEmailAttempt(formData.get("email"));
     mutation.mutate(formData);
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={(val) => { setOpen(val); if(!val) setShowWaitlist(false); }}>
       <DialogTrigger asChild>
-        <Button className="bg-rose-500 hover:bg-rose-600 gap-2">
-          <Heart size={16} fill="white" /> Share a Thought
-        </Button>
+        <Button className="bg-rose-500">Share a Thought</Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent>
         <DialogHeader>
-          <DialogTitle>Add to the Self Love Wall</DialogTitle>
+          <DialogTitle>
+            {showWaitlist ? "Join the Waitlist" : "Add to the Self Love Wall"}
+          </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Waitlist Email</label>
-            <Input 
-              name="email" 
-              type="email" 
-              placeholder="The email you used for Inclove waitlist" 
-              required 
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Your Badge</label>
-            <Input name="badge" placeholder="e.g. Survivor, Believer, Loved" required />
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Your Thought</label>
-            <Textarea 
-              name="content" 
-              placeholder="What does self-love mean to you?" 
-              className="resize-none h-32"
-              required 
-            />
-          </div>
-
-          {/* Error Handling Logic */}
-          {mutation.data?.error === "NOT_ON_WAITLIST" && (
-            <Alert variant="destructive">
-              <AlertDescription className="flex flex-col gap-2">
-                <span>You aren't on our waitlist yet! Join to post.</span>
-                <Button variant="outline" size="sm" asChild>
-                  <a href="/join-waitlist">Join Waitlist Now</a>
-                </Button>
-              </AlertDescription>
-            </Alert>
-          )}
-
-          {mutation.data?.error === "ALREADY_POSTED" && (
-            <Alert variant="destructive">
-              <AlertDescription>
-                You have already shared a thought! One post per person.
-              </AlertDescription>
-            </Alert>
-          )}
-
-          <Button 
-            type="submit" 
-            className="w-full bg-rose-500" 
-            disabled={mutation.isPending}
-          >
-            {mutation.isPending ? <Loader2 className="animate-spin" /> : "Post Thought"}
-          </Button>
-        </form>
+        {!showWaitlist ? (
+          <form onSubmit={handleSubmit} className="space-y-4">
+             {/* ... (Existing Email, Badge Select, and Content Textarea fields) ... */}
+             <Button type="submit" className="w-full">
+               {mutation.isPending ? "Checking..." : "Post Thought"}
+             </Button>
+             {mutation.data?.error === "ALREADY_POSTED" && (
+                <p className="text-red-500 text-sm text-center">One post per person!</p>
+             )}
+          </form>
+        ) : (
+          // <WaitlistForm defaultEmail={emailAttempt} />
+          <span>hello</span>
+        )}
       </DialogContent>
     </Dialog>
   );

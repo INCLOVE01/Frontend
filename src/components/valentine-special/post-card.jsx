@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card";
 import { Heart } from "lucide-react";
+import { Skeleton } from "../ui/skeleton";
 
 export default function PostCard({name='',badge='',content='',likes=0}){
     const [like, setLike] = useState(0)
@@ -28,3 +29,19 @@ export default function PostCard({name='',badge='',content='',likes=0}){
         </>
     )
 }
+
+const PostSkeleton = ()=>{
+    return(
+        <>
+            <Card className={'border shadow-sm px-4'}>
+                <Skeleton className={'w-24 h-4'} />
+                <Skeleton className={'w-full h-4'} />
+                <Skeleton className={'w-12 h-4'} />
+
+
+
+            </Card>
+        </>
+    )
+}
+export {PostSkeleton}
