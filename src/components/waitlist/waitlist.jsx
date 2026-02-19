@@ -1,12 +1,11 @@
-"use client"
 
 import Image from "next/image";
 import WaitlistForm from "./waitlist-form";
-import { useState } from "react";
+
 
 
 export default function Waitlist(){
-    const [imgNo, setImgNo] = useState(2)
+
     return(
         <div className="relative w-full h-screen bg-white">
             <div className="absolute top-16 left-0 z-10 bg-white/30 backdrop-blur-2xl p-4 mt-8 w-full h-max  flex flex-col items-center justify-center gap-8 sm:gap-12 sm:p-8 md:gap-16">
@@ -19,9 +18,9 @@ export default function Waitlist(){
                 </div>
             </div>
             <div className="relative w-full h-full p-0 md:grid md:grid-cols-3 md:grid-rows-1">
-                <Image src={'https://images.pexels.com/photos/3436830/pexels-photo-3436830.jpeg'} alt="face" width={500} height={500}  className={`md:col-span-1 md:row-span-1 object-cover w-full h-full ${imgNo == 0 ? 'flex' : 'hidden'} md:flex`}/>
-                <Image src={'https://images.pexels.com/photos/3978578/pexels-photo-3978578.jpeg'} alt="face" width={500} height={500}  className={`md:col-span-1 md:row-span-1 object-cover w-full h-full ${imgNo == 1 ? 'flex' : 'hidden'} md:flex`}/>
-                <Image src={'https://images.pexels.com/photos/6760915/pexels-photo-6760915.jpeg'} alt="face" width={500} height={500}  className={`md:col-span-1 md:row-span-1 object-cover w-full h-full ${imgNo == 2 ? 'flex' : 'hidden'} md:flex`}/>
+                <Image src={'https://images.pexels.com/photos/3436830/pexels-photo-3436830.jpeg'} alt="face" width={500} height={500}  className={`md:col-span-1 md:row-span-1 object-cover w-full h-full`}/>
+                <Image src={'https://images.pexels.com/photos/3978578/pexels-photo-3978578.jpeg'} alt="face" width={500} height={500}  className={`md:col-span-1 md:row-span-1 object-cover w-full h-full hidden md:flex`}/>
+                <Image src={'https://images.pexels.com/photos/6760915/pexels-photo-6760915.jpeg'} alt="face" width={500} height={500}  className={`md:col-span-1 md:row-span-1 object-cover w-full h-full hidden md:flex`}/>
 
             </div>        
         </div>

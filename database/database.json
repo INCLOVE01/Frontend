@@ -1,0 +1,15 @@
+{
+  "users": [
+    {
+      "id": "user_123",
+      "name": "Alex",
+      "email": "alex@example.com",
+      "preference": "female",
+      "gender": "male",
+      "bio": "Building things in Next.js"
+    }
+  ],
+  "notifications": [
+    { "id": "n1", "userId": "user_123", "text": "Someone liked your profile!" }
+  ]
+}
