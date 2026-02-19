@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import QueryClientProviders from "@/components/queryClientProviders";
 import MainNavbar from "@/components/navbar/main-navbar";
+import { MilestoneProvider } from "@/components/celebration/milestone";
 
 
 const geistSans = Geist({
@@ -29,10 +30,12 @@ export default function RootLayout({ children }) {
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Toaster />
+        <MilestoneProvider>
           <QueryClientProviders>
-        <MainNavbar/>
+          <MainNavbar/>
             {children}
           </QueryClientProviders>
+        </MilestoneProvider>
       </body>
     </html>
   );

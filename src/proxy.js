@@ -45,6 +45,6 @@ export const config = {
     '/dashboard/:path*',
     '/api/protected/:path*',
     '/home/:path*',
-    '/admin/:path*',
+  
   ],
 }
